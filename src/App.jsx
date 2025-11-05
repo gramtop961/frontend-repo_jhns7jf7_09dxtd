@@ -1,45 +1,31 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import Hero3D from './components/Hero3D';
-import WorldCuisinesTeaser from './components/WorldCuisinesTeaser';
 import Footer from './components/Footer';
+import Home from './components/Home';
+import WorldCuisines from './components/WorldCuisines';
+import RecipeDetail from './components/RecipeDetail';
+import IngredientCalculator from './components/IngredientCalculator';
+import WhatCanIMake from './components/WhatCanIMake';
 
 export default function App() {
   const [lastSearch, setLastSearch] = useState('');
 
   return (
     <div className="min-h-screen bg-midnight text-white font-inter">
-      <Navbar onSearch={setLastSearch} />
-      <main>
-        <Hero3D onSearch={setLastSearch} />
-
-        {lastSearch && (
-          <section className="bg-midnight/95 border-y border-white/10">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-              <p className="text-silver text-sm">Showing results for: <span className="text-white font-medium">{lastSearch}</span> (demo)</p>
-            </div>
-          </section>
-        )}
-
-        <WorldCuisinesTeaser />
-
-        <section id="categories" className="bg-gradient-to-b from-midnight/95 to-midnight py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl font-bold">Categories</h2>
-            <p className="text-silver text-sm">Cuisine • Meal Type • Dietary • Occasion • Method</p>
-            <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-              {['Cuisine', 'Meal Type', 'Dietary', 'Occasion', 'Method'].map((c, i) => (
-                <div key={c} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 hover:ring-white/20 transition">
-                  <div className={`h-14 w-full rounded-xl bg-gradient-to-br ${['from-saffron to-chili','from-basil to-lavender','from-turmeric to-saffron','from-chili to-turmeric','from-silver to-lavender'][i]} opacity-30`} />
-                  <div className="mt-3 font-medium">{c}</div>
-                  <div className="text-xs text-silver">Explore {c.toLowerCase()} collections</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
-      <Footer />
+      <BrowserRouter>
+        <Navbar onSearch={setLastSearch} />
+        <main>
+          <Routes>
+            <Route path="/" element={<Home onSearch={setLastSearch} lastSearch={lastSearch} />} />
+            <Route path="/world" element={<WorldCuisines />} />
+            <Route path="/recipe/:id" element={<RecipeDetail />} />
+            <Route path="/calculator" element={<IngredientCalculator />} />
+            <Route path="/pantry" element={<WhatCanIMake />} />
+          </Routes>
+        </main>
+        <Footer />
+      </BrowserRouter>
     </div>
   );
 }
