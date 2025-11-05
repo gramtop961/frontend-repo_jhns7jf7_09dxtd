@@ -1,28 +1,45 @@
-import { useState } from 'react'
+import { useState } from 'react';
+import Navbar from './components/Navbar';
+import Hero3D from './components/Hero3D';
+import WorldCuisinesTeaser from './components/WorldCuisinesTeaser';
+import Footer from './components/Footer';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [lastSearch, setLastSearch] = useState('');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+    <div className="min-h-screen bg-midnight text-white font-inter">
+      <Navbar onSearch={setLastSearch} />
+      <main>
+        <Hero3D onSearch={setLastSearch} />
 
-export default App
+        {lastSearch && (
+          <section className="bg-midnight/95 border-y border-white/10">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+              <p className="text-silver text-sm">Showing results for: <span className="text-white font-medium">{lastSearch}</span> (demo)</p>
+            </div>
+          </section>
+        )}
+
+        <WorldCuisinesTeaser />
+
+        <section id="categories" className="bg-gradient-to-b from-midnight/95 to-midnight py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 className="text-2xl sm:text-3xl font-bold">Categories</h2>
+            <p className="text-silver text-sm">Cuisine • Meal Type • Dietary • Occasion • Method</p>
+            <div className="mt-6 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {['Cuisine', 'Meal Type', 'Dietary', 'Occasion', 'Method'].map((c, i) => (
+                <div key={c} className="rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 hover:ring-white/20 transition">
+                  <div className={`h-14 w-full rounded-xl bg-gradient-to-br ${['from-saffron to-chili','from-basil to-lavender','from-turmeric to-saffron','from-chili to-turmeric','from-silver to-lavender'][i]} opacity-30`} />
+                  <div className="mt-3 font-medium">{c}</div>
+                  <div className="text-xs text-silver">Explore {c.toLowerCase()} collections</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
